@@ -133,5 +133,5 @@ def main(input):
 
 
 if __name__ == '__main__':
-    main('NFT_SHEET.csv')
+    main(input("input csv filename: "))
 
