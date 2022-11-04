@@ -4,6 +4,10 @@ import re
 import csv
 import json
 import hashlib
+import shutil
+
+if os.path.exists('./NFTS'):
+    shutil.rmtree('./NFTS')
 
 
 ## constants
@@ -88,14 +92,16 @@ def calculate_hash(file_path: str) -> str:
         return sha256_hash.hexdigest()
 
 
-def main(input, output):
+def main(input):
     """Parse NFT data into JSON files 
        Save copy of file with Sha256 hash of Generated Json attached per row
 
     Args:
         input (_type_): file path of read csv
         output (_type_): file path of output csv
+
     """
+    output = f'{input.split(".")[0]}.output.csv'
     with open(input, 'r') as read_obj, open(output, 'w') as write_obj:
         ## extract column names and NFT total
         team = None
@@ -109,6 +115,7 @@ def main(input, output):
         reader = csv.DictReader(read_obj)
         writer = csv.DictWriter(write_obj, fieldnames=columns)
         writer.writeheader()
+        os.mkdir('./NFTS')
 
         ## loop through rows and parse data to json format
         for row in reader:
@@ -126,5 +133,5 @@ def main(input, output):
 
 
 if __name__ == '__main__':
-    main('NFT_SHEET.csv', 'NFT_SHEET_OUTPUT.csv')
+    main('NFT_SHEET.csv')
 
